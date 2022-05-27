@@ -14,6 +14,9 @@ class Node:
         else:
             return ''
     
+    def __len__(self):
+        return len(list(self.get_leaves()))
+
     # Helper function for writing newick string
     def write_newick(self, terminate=True, format=0):
         if self.is_leaf():
@@ -126,7 +129,7 @@ class Tree:
                 f = open(newick)
                 tree_str = f.readline()
                 f.close()
-                self.root = str_to_newick(newick_str)
+                self.root = str_to_newick(tree_str)
             else:
                 self.root = str_to_newick(newick)
     
@@ -135,6 +138,9 @@ class Tree:
 
     def __iter__(self):
         return self.root.iter_descendants()
+
+    def __len__(self):
+        return len(list(self.iter_leaves()))
 
     #format codes --> 0: leaf names only, 1: leaf names + lengths only, 2: leaf and internal names, 3: leaf and internal names + lengths
     def print_newick(self, format=0):
@@ -221,10 +227,20 @@ class Tree:
                 LCA_node = cur_node
         return LCA_node
 
-    def resolve_polytomy(self, leaves):
-        ancestors = set()
-        for leaf in leaves:
-            pass
+    def unroot(self):
+        subtree = self.root.children[1]
+        if subtree.is_leaf():
+            subtree = self.root.children[0]
+            if subtree.is_leaf():
+                return None
+        subtree.detach()
+        node1, node2 = subtree.children[0], subtree.children[1]
+        node1.detach()
+        node2.detach()
+        self.root.set_child(node1)
+        self.root.set_child(node2)
+        del subtree
+
 
 def str_to_newick(newick_str):
     newick_str = newick_str.strip().replace(" ", "")

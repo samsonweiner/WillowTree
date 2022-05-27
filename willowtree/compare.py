@@ -43,7 +43,7 @@ def strict_consensus(t1, t2):
     shared_bipartitions = []
     for i in b1:
         for j in b2:
-            if i[0] == j[0] or i[0] == j[0]:
+            if set(min(i, key = lambda x: len(x))) == set(min(j, key = lambda x: len(x))):
                 shared_bipartitions.append(i)
                 b2.remove(j)
                 break
@@ -58,7 +58,7 @@ def robinson_foulds(t1, t2, rooted=True):
     for i in b1:
         found = False
         for j in b2:
-            if i[0] == j[0] or i[0] == j[0]:
+            if set(min(i, key = lambda x: len(x))) == set(min(j, key = lambda x: len(x))):
                 found = True
                 break
         if not found:
@@ -66,26 +66,9 @@ def robinson_foulds(t1, t2, rooted=True):
     for i in b2:
         found = False
         for j in b1:
-            if i[0] == j[0] or i[0] == j[0]:
+            if set(min(i, key = lambda x: len(x))) == set(min(j, key = lambda x: len(x))):
                 found = True
                 break
         if not found:
             score += 1
     return score, maxScore
-
-'''
-#TESTS
-t1 = Tree(newick="((((a,b),c),d),(e,(f,g)));")
-t2 = Tree(newick="((((a,b),c),e),(d,(f,g)));")
-t3 = Tree(newick="(((a, b), c, d), (e, f), g, h);")
-# Consensus output of t1, t2 should have d and e from root:
-# (((a,b),c),d,e,(f,g));
-
-
-t1 = Tree(newick='((a,b),c,(d,e));')
-t2 = Tree(newick='((a,b),e,(c,d));')
-t3 = Tree(newick='((a,e),b,(c,d));')
-
-s, m = robinson_foulds(t1, t3, rooted=False)
-print(s, m)
-'''
