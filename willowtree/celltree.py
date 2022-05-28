@@ -1,4 +1,4 @@
-from tree import Node, Tree
+from .tree import Node, Tree
 import copy
 
 class cellNode(Node):

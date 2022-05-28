@@ -1,4 +1,4 @@
-from tree import Node, Tree
+from .tree import Node, Tree
 
 def tree_from_bipartitions(bipartitions, leafnames):
     root = Node(name='root')
@@ -37,9 +37,9 @@ def bipartitions_from_tree(tree, rooted=True):
                 bipartitions.append((descendants, [x for x in leafnames if x not in set(descendants)]))
     return bipartitions, leafnames
 
-def strict_consensus(t1, t2):
-    b1, l1 = bipartitions_from_tree(t1)
-    b2, l2 = bipartitions_from_tree(t2)
+def strict_consensus(t1, t2, rooted=True):
+    b1, l1 = bipartitions_from_tree(t1, rooted=rooted)
+    b2, l2 = bipartitions_from_tree(t2, rooted=rooted)
     shared_bipartitions = []
     for i in b1:
         for j in b2:
