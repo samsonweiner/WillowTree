@@ -4,7 +4,7 @@ Willowtree is a python package for general tree structures that supports tree se
 
 Willowtree can be installed with git:
 ```
-git install willowtree
+pip install willowtree
 ```
 
 To use, simply import the package in your python script.
